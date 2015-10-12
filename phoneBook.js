@@ -10,6 +10,7 @@ module.exports.add = function add(name, phone, email) {
     if (name === null || !checkPhone(phone) || !checkEmail(email)) {
         return;
     }
+    phone = phone.replace(/\s|\(|\)|\+|-/g, '');
     phoneBook.push(
         {
             name: name,
@@ -36,6 +37,10 @@ function checkEmail(email) {
 module.exports.find = function find(query) {
     if (typeof (query) === 'undefined') {
         query = '';
+    }
+    var phoneReg = /(?:[-+0-9()])+/;
+    if (phoneReg.test(query)) {
+        query = query.replace(/\s|\(|\)|\+|-/g, '');
     }
     for (var i = 0; i < phoneBook.length; i++) {
         if (phoneBook[i].name.indexOf(query) > -1 || phoneBook[i].phone.indexOf(query) > -1 ||
