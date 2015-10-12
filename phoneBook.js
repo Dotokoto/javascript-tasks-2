@@ -45,7 +45,8 @@ module.exports.find = function find(query) {
     for (var i = 0; i < phoneBook.length; i++) {
         if (phoneBook[i].name.indexOf(query) > -1 || phoneBook[i].phone.indexOf(query) > -1 ||
             phoneBook[i].email.indexOf(query) > -1) {
-            console.log(phoneBook[i].name + ', ' + phoneBook[i].phone + ', ' + phoneBook[i].email);
+            console.log(phoneBook[i].name + ', ' +
+                module.exports.phoneToPrint(phoneBook[i].phone) + ', ' + phoneBook[i].email);
         }
     }
 };
@@ -87,4 +88,12 @@ module.exports.showTable = function showTable() {
 
     // Ваша чёрная магия здесь
 
+};
+
+module.exports.phoneToPrint = function phoneToPrint(phone) {
+    if (phone.length >= 11) {
+        phone = '+' + phone;
+    }
+    phone = phone.replace(/^([+0-9]*)(\d{3})(\d{3})(\d)(\d{3})$/, '$1 ($2) $3-$4-$5');
+    return phone;
 };
