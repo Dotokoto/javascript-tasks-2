@@ -74,14 +74,20 @@ module.exports.printRecords = function printRecords(records) {
  Функция удаления записи в телефонной книге.
  */
 module.exports.remove = function remove(query) {
+    if (typeof (query) === 'undefined') {
+        query = '';
+    }
+    var phoneReg = /(?:[-+0-9()])+/;
+    if (phoneReg.test(query)) {
+        query = query.replace(/\s|\(|\)|\+|-/g, '');
+    }
     var deletedRecords = 0;
-    if (query) {
-        for (var i = 0; i < phoneBook.length; i++) {
-            if (phoneBook[i].name.indexOf(query) > -1 || phoneBook[i].phone.indexOf(query) > -1 ||
-                phoneBook[i].email.indexOf(query) > -1) {
-                phoneBook.splice(i, 1);
-                deletedRecords++;
-            }
+    for (var i = 0; i < phoneBook.length; i++) {
+        if (phoneBook[i].name.indexOf(query) > -1 || phoneBook[i].phone.indexOf(query) > -1 ||
+            phoneBook[i].email.indexOf(query) > -1) {
+            phoneBook.splice(i, 1);
+            i--;
+            deletedRecords++;
         }
     }
     console.log('Удалено записей: ' + deletedRecords);
